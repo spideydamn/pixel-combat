@@ -1,8 +1,12 @@
+from flask_login import login_required
 from flask_restful import Resource, abort
 from flask import jsonify
 
 from .. import db_session
 from .user import User
+from ..day.daily_leader_board import DailyLeaderBoard
+from ..week.weekly_leader_board import WeeklyLeaderBoard
+from ..month.monthly_leader_board import MonthlyLeaderBoard
 from .user_parser import post_parser, put_parser
 
 
@@ -24,6 +28,15 @@ class UserResource(Resource):
     def delete(self, user_id):
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
+        daily_leader_board = session.query(DailyLeaderBoard).filter(
+            DailyLeaderBoard.user_id == user_id).first()
+        weekly_leader_board = session.query(WeeklyLeaderBoard).filter(
+            WeeklyLeaderBoard.user_id == user_id).first()
+        monthly_leader_board = session.query(MonthlyLeaderBoard).filter(
+            MonthlyLeaderBoard.user_id == user_id).first()
+        session.delete(daily_leader_board)
+        session.delete(weekly_leader_board)
+        session.delete(monthly_leader_board)
         user = session.query(User).get(user_id)
         session.delete(user)
         session.commit()
@@ -56,6 +69,12 @@ class UserListResource(Resource):
         )
         user.set_password(args['password'])
         session.add(user)
+        daily_top = DailyLeaderBoard(user=user, number_of_pixels=0)
+        session.add(daily_top)
+        weekly_top = WeeklyLeaderBoard(user=user, number_of_pixels=0)
+        session.add(weekly_top)
+        monthly_top = MonthlyLeaderBoard(user=user, number_of_pixels=0)
+        session.add(monthly_top)
         session.commit()
         return jsonify({'success': 'OK'})
 

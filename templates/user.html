@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="user">
+        <div class="block">
+            <div class="left-container">
+                {% if avatar %}
+                    <div class="avatar"><img class="avatar" src="../static/avatars/{{id}}.jpg" alt="avatar"></div>
+                {% else %}
+                    <div class="avatar"><img class="avatar" src="../static/avatars/avatar.png" alt="avatar"></div>
+                {% endif %}
+            </div>
+            <div class="info">
+                <div class="up">
+                    <h2>{{username}}</h2>
+                    <p><span class="variable-name">id:</span><span class="variable-value">{{id}}</span></p>
+                    {% if id == current_user.id%}
+                        <p><span class="variable-name">email:</span><span class="variable-value">{{current_user.email}}</span></p>
+                    {% endif %}
+                    <p><span class="variable-name">profile creation date:</span><span class="variable-value">{{created_date}}</span></p>
+                    {% if id == current_user.id%}
+                        <p><span class="variable-name">password:</span><span class="variable-value">****************</span></p>
+                    {% endif %}
+                </div>
+                <div class="buttons">
+                    {% if id == current_user.id%}
+                    <div class="logout"><a href="/logout">LOG OUT</a></div>
+                    <div class="edit"><a href="/edit">EDIT</a></div>
+                    <div class="delete"><a href="/delete">DELETE</a></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

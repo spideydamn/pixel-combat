@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="leader-board">
+    <div class="container">
+        <h2>LEADER BOARDS</h2>
+        <div class="categories">
+            <div class="daily {% if category == 'daily'%} daily-selected {% else %} daily-not-selected {% endif %}">
+                <a href="/leader-boards?category=daily">DAILY</a>
+            </div>
+            <div class="weekly {% if category == 'weekly'%} weekly-selected {% else %} weekly-not-selected {% endif %}">
+                <a href="/leader-boards?category=weekly">WEEKLY</a>
+            </div>
+            <div class="monthly {% if category == 'monthly'%} monthly-selected {% else %} monthly-not-selected {% endif %}">
+                <a href="/leader-boards?category=monthly">MONTHLY</a>
+            </div>
+        </div>
+        <div class="people">
+            <table>
+                <caption>{% if category == 'daily'%} DAILY {% elif category == 'weekly'%} WEEKLY {% else %} MONTHLY {% endif%} LEADER BOARD</caption>
+                <thead>
+                    <tr>
+                        <th class="position">POSITION</th>
+                        <th class="username">USERNAME</th>
+                        <th class="number-of-pixels">NUMBER OF PIXELS</th>       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr class="{% if loop.index <= 1 %} red 
+                    {% elif loop.index <= 3 %} orange 
+                    {% elif loop.index <= 5 %} yellow 
+                    {% elif loop.index <= 10 %} lightgreen
+                    {% elif loop.index <= 20 %} green
+                    {% elif loop.index <= 50 %} lightblue
+                    {% elif loop.index <= 100 %} blue
+                    {% elif loop.index <= 200 %} purple
+                    {% elif loop.index <= 500 %} violet
+                    {% elif loop.index <= 1000 %} pink
+                    {% else %} gray
+                    {% endif %}">
+                        <td class="position">{{ loop.index }}</td>
+                        <td class="username"><a href="/user?id={{ loop.index }}">{{ user[0] }}</a></td>
+                        <td class="number-of-pixels"> {{ user[1] }} </td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}

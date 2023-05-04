@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="user">
+        <form action="" method="POST" enctype="multipart/form-data" class="form">
+            {{ form.hidden_tag() }}
+            <div class="block">
+                <div class="left-container">
+                    {% if current_user.avatar %}
+                        <div class="avatar"><img class="avatar" src="../static/avatars/{{current_user.id}}.jpg" alt="avatar"></div>
+                    {% else %}
+                        <div class="avatar"><img class="avatar" src="../static/avatars/avatar.png" alt="avatar"></div>
+                    {% endif %}
+                    <div class="form-group avatar-form-group">
+                        {{ form.avatar.label(class="label-for-avatar-form") }} {{ form.avatar(accept="image/jpeg,image/jpg", class="avatar-form") }}<br>
+                        {% for error in form.avatar.errors %}
+                            <p class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="up">
+                        <div class="form-group">
+                            {{ form.username(class="form-control username-form", value=current_user.username) }}<br>
+                            {% for error in form.username.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <span class="label-for-form-control">id:</span><span>{{current_user.id}}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ form.email.label(class="label-for-form-control") }} {{ form.email(class="form-control", type="email", value=current_user.email) }}<br>
+                            {% for error in form.email.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <span class="label-for-form-control">profile creation date:</span><span>{{current_user.created_date}}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ form.old_password.label(class="label-for-form-control") }} {{ form.old_password(class="form-control", type="password") }}<br>
+                            {% for error in form.old_password.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password.label(class="label-for-form-control") }} {{ form.password(class="form-control", type="password") }}<br>
+                            {% for error in form.password.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                
+                        <div class="form-group">
+                            {{ form.password_again.label(class="label-for-form-control") }} {{ form.password_again(class="form-control", type="password") }}<br>
+                            {% for error in form.password_again.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="error-message">{{ message }}</div>
+                    </div>
+                    <div class="buttons">
+                        <div class="logout"><a href="/logout">LOG OUT</a></div>
+                        {{ form.submit(type="submit", class="btn") }}
+                        <div class="delete"><a href="/delete">DELETE</a></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+{% endblock %}
